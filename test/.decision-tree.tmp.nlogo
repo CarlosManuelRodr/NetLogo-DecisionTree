@@ -1,4 +1,11 @@
-extensions [example]
+extensions [decision-tree]
+
+to go
+  let dict :make
+  instance:put dict "turtle" "cute"
+  instance:put dict "bunny" "cutest"
+  print dict
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
