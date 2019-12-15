@@ -21,18 +21,17 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     public void load(org.nlogo.api.PrimitiveManager primManager)
     {
-        primManager.addPrimitive("clear-instance", new InstanceClear());
-        primManager.addPrimitive("get-instance", new InstanceGet());
-        primManager.addPrimitive("make-instance", new InstanceMake());
-        primManager.addPrimitive("put-instance", new InstancePut());
-        primManager.addPrimitive("remove-instance", new InstanceRemove());
+        primManager.addPrimitive("clear-instance", new InstanceClear());      // clear-instance <instance>
+        primManager.addPrimitive("make-instance", new InstanceMake());        // make-instance
+        primManager.addPrimitive("put-instance", new InstancePut());          // put-instance <instance> <key> <value>
+        primManager.addPrimitive("remove-instance", new InstanceRemove());    // remove-instance <instance> <key> <value>
 
-        primManager.addPrimitive("make-classifier", new ClassifierMake());
-        primManager.addPrimitive("clear-classifier", new ClassifierClear());
-        primManager.addPrimitive("addto-classifier", new ClassifierAddTo());
+        primManager.addPrimitive("make-classifier", new ClassifierMake());    // make-classifier <number_of_attributes> <class_index>
+        primManager.addPrimitive("clear-classifier", new ClassifierClear());  // clear-classifier <classifier>
+        primManager.addPrimitive("addto-classifier", new ClassifierAddTo());  // addto-classifier <classifier> <instance>
 
-        primManager.addPrimitive("train", new InstanceRemove());
-        primManager.addPrimitive("classify", new InstanceRemove());
+        primManager.addPrimitive("train", new InstanceRemove());              // train <classifier>
+        primManager.addPrimitive("classify", new InstanceRemove());           // classify <classifier> <instance>
     }
 
     /***********************************
@@ -44,9 +43,8 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     public static class J48Classifier implements ExtensionObject
     {
-        //private final long id;
-        private Instances instances;
-        private J48 classifier;
+        public Instances instances;
+        public J48 classifier;
 
         public J48Classifier()
         {
@@ -224,28 +222,6 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
-    public static class InstanceGet implements Reporter
-    {
-        public Syntax getSyntax() {
-            return SyntaxJ.reporterSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType()}, Syntax.WildcardType());
-        }
-
-        public Object report(Argument args[], Context context)
-                throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException("not a table: " + org.nlogo.api.Dump.logoObject(arg0));
-            }
-            Object key = args[1].get();
-            Object result = ((TableInstance) arg0).get(key);
-            if (result == null) {
-                throw new ExtensionException("No value for " + org.nlogo.api.Dump.logoObject(key) + " in instance.");
-            }
-            return result;
-        }
-    }
-
     public static class InstanceMake implements Reporter
     {
         public Syntax getSyntax() {
@@ -288,13 +264,13 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         {
             Object arg0 = args[0].get();
             if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException("not a table: " + org.nlogo.api.Dump.logoObject(arg0));
+                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
             }
             ((TableInstance) arg0).remove(args[1].get());
         }
     }
 
-    // Abstract definitions
+    // Abstracts definitions
 
     public void clearAll()
     {
@@ -311,8 +287,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
                     org.nlogo.api.Dump.csv().encode(
                         org.nlogo.api.Dump.extensionObject(instance, true, true, false)
                         )
-                    + "\n"
-            );
+                    + "\n");
         }
         return buffer;
     }
@@ -336,22 +311,18 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     private static boolean isValidKey(Object key)
     {
-        return
-                key instanceof Double ||
-                        key instanceof String ||
-                        key instanceof Boolean ||
-                        (key instanceof LogoList &&
-                                containsOnlyValidKeys((LogoList) key));
+        return key instanceof Double || key instanceof String || key instanceof Boolean ||
+                        (key instanceof LogoList && containsOnlyValidKeys((LogoList) key));
     }
 
     private static void ensureKeyValidity(Object key) throws ExtensionException
     {
         if (!isValidKey(key))
         {
-            throw new org.nlogo.api.ExtensionException
-                    (org.nlogo.api.Dump.logoObject(key) + " is not a valid table key "
-                            + "(a table key may only be a number, a string, true or false, or a list "
-                            + "whose items are valid keys)");
+            throw new org.nlogo.api.ExtensionException(
+                    org.nlogo.api.Dump.logoObject(key) + " is not a valid table key "
+                    + "(a table key may only be a number, a string, true or false, or a list "
+                    + "whose items are valid keys)");
 
         }
     }
