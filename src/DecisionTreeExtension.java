@@ -12,7 +12,6 @@ import org.nlogo.core.SyntaxJ;
 import org.nlogo.core.ExtensionObject;
 
 import java.util.Iterator;
-import java.util.ArrayList;
 
 import weka.core.Instances;
 import weka.classifiers.trees.J48;
@@ -22,46 +21,117 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     public void load(org.nlogo.api.PrimitiveManager primManager)
     {
-        primManager.addPrimitive("clear-instance", new Clear());
-        primManager.addPrimitive("get-instance", new Get());
-        primManager.addPrimitive("make-instance", new Make());
-        primManager.addPrimitive("put-instance", new Put());
-        primManager.addPrimitive("remove-instance", new Remove());
+        primManager.addPrimitive("clear-instance", new InstanceClear());
+        primManager.addPrimitive("get-instance", new InstanceGet());
+        primManager.addPrimitive("make-instance", new InstanceMake());
+        primManager.addPrimitive("put-instance", new InstancePut());
+        primManager.addPrimitive("remove-instance", new InstanceRemove());
 
-        primManager.addPrimitive("make-classifier", new Remove());
-        primManager.addPrimitive("clear-classifier", new Remove());
-        primManager.addPrimitive("addto-classifier", new Remove());
+        primManager.addPrimitive("make-classifier", new ClassifierMake());
+        primManager.addPrimitive("clear-classifier", new ClassifierClear());
+        primManager.addPrimitive("addto-classifier", new ClassifierAddTo());
 
-        primManager.addPrimitive("train", new Remove());
-        primManager.addPrimitive("classify", new Remove());
+        primManager.addPrimitive("train", new InstanceRemove());
+        primManager.addPrimitive("classify", new InstanceRemove());
     }
 
-    /*****************************
-     *                           *
-     *    ClassifierInstance     *
-     *                           *
-     ****************************/
+    /***********************************
+     *                                 *
+     * ClassifierInstance manipulation *
+     *                                 *
+     **********************************/
 
-    class J48Classifier
+
+    public static class J48Classifier implements ExtensionObject
     {
-        public Instances instances;
-        public J48 classifier;
+        //private final long id;
+        private Instances instances;
+        private J48 classifier;
+
+        public J48Classifier()
+        {
+
+        }
+
+        public String dump(boolean readable, boolean exportable, boolean reference)
+        {
+            int id = 4;
+            if (exportable && reference) {
+                return ("" + id);
+            }
+            else {
+                return (exportable ? (id + ": ") : "") + org.nlogo.api.Dump.logoObject("dump text", true, exportable);
+            }
+        }
+
+        public String getExtensionName() {
+            return "decision-tree";
+        }
+
+        public String getNLTypeName() {
+            return "classifier";
+        }
+
+        public boolean recursivelyEqual(Object o)
+        {
+            return true;
+        }
     }
 
-    private static ArrayList<J48Classifier> j48Classifiers = new ArrayList<J48Classifier>();
+    public static class ClassifierClear implements Command
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
+        }
 
-    /*****************************
-     *                           *
-     *     TableInstance         *
-     *                           *
-     ****************************/
+        public void perform(Argument args[], Context context)
+                throws ExtensionException, LogoException
+        {
 
-    // TableInstance is just a stripped down version of the Table extension.
+        }
+    }
+
+    public static class ClassifierAddTo implements Command
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.commandSyntax
+                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType(),
+                            Syntax.WildcardType()});
+        }
+
+        public void perform(Argument args[], Context context)
+                throws ExtensionException, LogoException
+        {
+
+        }
+    }
+
+    public static class ClassifierMake implements Reporter
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.reporterSyntax(Syntax.WildcardType());
+        }
+
+        public Object report(Argument args[], Context context)
+                throws ExtensionException, LogoException {
+            return new J48Classifier();
+        }
+
+    }
+
+    /*******************************
+     *                             *
+     * TableInstance manipulation  *
+     *                             *
+     ******************************/
+
+    // TableInstance is just a stripped down version of the Table extension. Here is used as
+    // holder for Instances that will be passed to Weka.
     // Source: https://github.com/NetLogo/Table-Extension
 
     private static java.util.WeakHashMap<TableInstance, Long> tables = new java.util.WeakHashMap<TableInstance, Long>();
 
-    private static long next = 0;
+    private static long nextTable = 0;
 
     // It's important that we extend LinkedHashMap here, rather than
     // plain HashMap, because we want model results to be reproducible
@@ -77,30 +147,9 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
         public TableInstance()
         {
-            tables.put(this, next);
-            id = next;
-            next++;
-        }
-
-        public void addAll(LogoList alist) throws ExtensionException
-        {
-            for (Iterator<Object> it = alist.javaIterator(); it.hasNext();)
-            {
-                Object pair = it.next();
-                if (!(pair instanceof LogoList) || ((LogoList) pair).size() < 2)
-                {
-                    throw new org.nlogo.api.ExtensionException("expected a two-element list: " +
-                                    org.nlogo.api.Dump.logoObject(pair));
-                }
-                this.put(((LogoList) pair).first(), ((LogoList) pair).butFirst().first());
-            }
-        }
-
-        public TableInstance(long id)
-        {
-            this.id = id;
-            tables.put(this, id);
-            next = StrictMath.max(next, id + 1);
+            tables.put(this, nextTable);
+            id = nextTable;
+            nextTable++;
         }
 
         public boolean equals(Object obj) {
@@ -159,10 +208,98 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
+    public static class InstanceClear implements Command
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
+        }
+
+        public void perform(Argument args[], Context context) throws ExtensionException, LogoException
+        {
+            Object arg0 = args[0].get();
+            if (!(arg0 instanceof TableInstance)) {
+                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
+            }
+            ((TableInstance) arg0).clear();
+        }
+    }
+
+    public static class InstanceGet implements Reporter
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.reporterSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType()}, Syntax.WildcardType());
+        }
+
+        public Object report(Argument args[], Context context)
+                throws ExtensionException, LogoException
+        {
+            Object arg0 = args[0].get();
+            if (!(arg0 instanceof TableInstance)) {
+                throw new org.nlogo.api.ExtensionException("not a table: " + org.nlogo.api.Dump.logoObject(arg0));
+            }
+            Object key = args[1].get();
+            Object result = ((TableInstance) arg0).get(key);
+            if (result == null) {
+                throw new ExtensionException("No value for " + org.nlogo.api.Dump.logoObject(key) + " in instance.");
+            }
+            return result;
+        }
+    }
+
+    public static class InstanceMake implements Reporter
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.reporterSyntax(Syntax.WildcardType());
+        }
+
+        public Object report(Argument args[], Context context) throws ExtensionException, LogoException {
+            return new TableInstance();
+        }
+
+    }
+
+    public static class InstancePut implements Command
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType(), Syntax.WildcardType()});
+        }
+
+        public void perform(Argument args[], Context context) throws ExtensionException, LogoException
+        {
+            Object arg0 = args[0].get();
+            if (!(arg0 instanceof TableInstance))
+            {
+                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
+            }
+            Object key = args[1].get();
+            ensureKeyValidity(key);
+            ((TableInstance) arg0).put(key, args[2].get());
+        }
+    }
+
+    public static class InstanceRemove implements Command
+    {
+        public Syntax getSyntax() {
+            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType()});
+        }
+
+        public void perform(Argument args[], Context context)
+                throws ExtensionException, LogoException
+        {
+            Object arg0 = args[0].get();
+            if (!(arg0 instanceof TableInstance)) {
+                throw new org.nlogo.api.ExtensionException("not a table: " + org.nlogo.api.Dump.logoObject(arg0));
+            }
+            ((TableInstance) arg0).remove(args[1].get());
+        }
+    }
+
+    // Abstract definitions
+
     public void clearAll()
     {
         tables.clear();
-        next = 0;
+        nextTable = 0;
     }
 
     public StringBuilder exportWorld()
@@ -170,9 +307,12 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         StringBuilder buffer = new StringBuilder();
         for (TableInstance instance : tables.keySet())
         {
-            buffer.append
-                    (org.nlogo.api.Dump.csv().encode
-                            (org.nlogo.api.Dump.extensionObject(instance, true, true, false)) + "\n");
+            buffer.append(
+                    org.nlogo.api.Dump.csv().encode(
+                        org.nlogo.api.Dump.extensionObject(instance, true, true, false)
+                        )
+                    + "\n"
+            );
         }
         return buffer;
     }
@@ -192,138 +332,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
-    ///
-
-    public static class Clear implements Command
-    {
-        public Syntax getSyntax() {
-            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
-        }
-
-        public void perform(Argument args[], Context context)
-                throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
-            }
-            ((TableInstance) arg0).clear();
-        }
-    }
-
-    public static class Get implements Reporter
-    {
-        public Syntax getSyntax()
-        {
-            return SyntaxJ.reporterSyntax
-                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType()}, Syntax.WildcardType());
-        }
-
-        public Object report(Argument args[], Context context)
-                throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException("not a table: " + org.nlogo.api.Dump.logoObject(arg0));
-            }
-            Object key = args[1].get();
-            Object result = ((TableInstance) arg0).get(key);
-            if (result == null)
-            {
-                throw new ExtensionException("No value for " + org.nlogo.api.Dump.logoObject(key)
-                                + " in instance.");
-            }
-            return result;
-        }
-    }
-
-    public static class Make implements Reporter
-    {
-        public Syntax getSyntax() {
-            return SyntaxJ.reporterSyntax(Syntax.WildcardType());
-        }
-
-        public Object report(Argument args[], Context context)
-                throws ExtensionException, LogoException {
-            return new TableInstance();
-        }
-
-    }
-
-    public static class Put implements Command
-    {
-        public Syntax getSyntax()
-        {
-            return SyntaxJ.commandSyntax
-                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType(),
-                            Syntax.WildcardType()});
-        }
-
-        public void perform(Argument args[], Context context) throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance))
-            {
-                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
-            }
-            Object key = args[1].get();
-            ensureKeyValidity(key);
-            ((TableInstance) arg0).put(key, args[2].get());
-        }
-    }
-
-    public static class Remove implements Command
-    {
-        public Syntax getSyntax()
-        {
-            return SyntaxJ.commandSyntax
-                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType()});
-        }
-
-        public void perform(Argument args[], Context context)
-                throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException
-                        ("not a table: " +
-                                org.nlogo.api.Dump.logoObject(arg0));
-            }
-            ((TableInstance) arg0).remove(args[1].get());
-        }
-    }
-
-    public org.nlogo.core.ExtensionObject readExtensionObject(org.nlogo.api.ExtensionManager reader,
-                                                              String typeName, String value)
-            throws org.nlogo.api.ExtensionException
-    {
-        try
-        {
-            String[] s = value.split(":");
-            long id = Long.parseLong(s[0]);
-            TableInstance instance = getOrCreateTableFromId(id);
-            if (s.length > 1) {
-                instance.addAll((LogoList) reader.readFromString(s[1]));
-            }
-            return instance;
-        }
-        catch (CompilerException ex) {
-            throw new org.nlogo.api.ExtensionException(ex.getMessage());
-        }
-    }
-
-    private TableInstance getOrCreateTableFromId(long id)
-    {
-        for (TableInstance instance : tables.keySet())
-        {
-            if (instance.id == id) {
-                return instance;
-            }
-        }
-        return new TableInstance(id);
-    }
-
-    /// helpers
+    /// Helpers
 
     private static boolean isValidKey(Object key)
     {

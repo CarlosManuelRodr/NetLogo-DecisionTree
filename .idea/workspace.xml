@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="edc9c64e-51ff-486d-8990-3d0d09cacdff" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/example.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/decision_tree.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/decision_tree.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/decision_tree.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IntegerList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SampleExtension.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/example/example.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test.nlogo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DecisionTreeExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DecisionTreeExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/.decision-tree.tmp.nlogo" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +75,7 @@
       <updated>1576279821286</updated>
       <workItem from="1576279823319" duration="4882000" />
       <workItem from="1576290366313" duration="3000" />
-      <workItem from="1576359156215" duration="8360000" />
+      <workItem from="1576359156215" duration="11922000" />
     </task>
     <servers />
   </component>
@@ -108,9 +103,9 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state x="767" y="315" width="424" height="491" key="FileChooserDialogImpl/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576289732847" />
-    <state x="472" y="131" width="1024" height="852" key="SettingsEditor" timestamp="1576363922033">
+    <state x="472" y="131" width="1024" height="852" key="SettingsEditor" timestamp="1576371569143">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state x="472" y="131" width="1024" height="852" key="SettingsEditor/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576363922033" />
+    <state x="472" y="131" width="1024" height="852" key="SettingsEditor/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576371569143" />
   </component>
 </project>

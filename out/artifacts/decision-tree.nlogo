@@ -1,9 +1,9 @@
 extensions [decision-tree]
 
 to go
-  let dict :make
-  instance:put dict "turtle" "cute"
-  instance:put dict "bunny" "cutest"
+  let dict decision-tree:make-instance
+  decision-tree:put-instance dict "turtle" "cute"
+  decision-tree:put-instance dict "bunny" "cutest"
   print dict
 end
 @#$#@#$#@
@@ -33,6 +33,23 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
+
+BUTTON
+64
+72
+127
+105
+NIL
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
