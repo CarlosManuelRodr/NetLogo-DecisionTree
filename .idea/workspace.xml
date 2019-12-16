@@ -3,14 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="edc9c64e-51ff-486d-8990-3d0d09cacdff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NetLogoDecisionTree.iml" beforeDir="false" afterPath="$PROJECT_DIR$/NetLogoDecisionTree.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/decision-tree/decision-tree.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/decision-tree/decision-tree.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classify.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DecisionTreeExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DecisionTreeExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WekaWrapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/decision-tree.nlogo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/decision-tree/decision-tree.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/table.nlogo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestWeka.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,28 +41,41 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/lib" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager">
-    <configuration name="TestClassifier" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="TestClassifier" />
+  <component name="RunManager" selected="Application.TestNetLogo">
+    <configuration name="TestNetLogo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TestNetLogo" />
+      <module name="NetLogoDecisionTree" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=/opt/netlogo/app -Djava.awt.headless=true" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestWeka" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TestWeka" />
       <module name="NetLogoDecisionTree" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.TestNetLogo" />
+      <item itemvalue="Application.TestWeka" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestClassifier" />
+        <item itemvalue="Application.TestNetLogo" />
+        <item itemvalue="Application.TestWeka" />
       </list>
     </recent_temporary>
   </component>
@@ -95,6 +104,7 @@
       <workItem from="1576279823319" duration="4882000" />
       <workItem from="1576290366313" duration="3000" />
       <workItem from="1576359156215" duration="16039000" />
+      <workItem from="1576439626190" duration="10281000" />
     </task>
     <servers />
   </component>
@@ -106,10 +116,14 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state x="584" y="215" width="800" height="684" key="#Project_Structure/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576279836147" />
-    <state x="447" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576363908221">
+    <state x="447" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576461677153">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state x="447" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576363908221" />
+    <state x="447" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461677153" />
+    <state x="772" y="261" width="424" height="591" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1576460910360">
+      <screen x="58" y="27" width="1862" height="1053" />
+    </state>
+    <state x="772" y="261" width="424" height="591" key="#com.intellij.ide.macro.MacrosDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576460910360" />
     <state x="557" y="27" width="853" height="1053" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1576363598555">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
@@ -118,45 +132,72 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state x="722" y="301" width="524" height="512" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576363052622" />
-    <state x="767" y="315" width="424" height="491" key="FileChooserDialogImpl" timestamp="1576289732847">
+    <state width="433" height="466" key="DebuggerActiveHint" timestamp="1576452405143">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state x="767" y="315" width="424" height="491" key="FileChooserDialogImpl/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576289732847" />
-    <state width="1812" height="338" key="GridCell.Tab.0.bottom" timestamp="1576378795764">
+    <state width="433" height="466" key="DebuggerActiveHint/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576452405143" />
+    <state x="726" y="304" width="515" height="622" key="EnvironmentVariablesDialog" timestamp="1576460880886">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795764" />
-    <state width="1812" height="338" key="GridCell.Tab.0.center" timestamp="1576378795763">
+    <state x="726" y="304" width="515" height="622" key="EnvironmentVariablesDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576460880886" />
+    <state x="767" y="315" width="744" height="498" key="FileChooserDialogImpl" timestamp="1576461548342">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795763" />
-    <state width="1812" height="338" key="GridCell.Tab.0.left" timestamp="1576378795763">
+    <state x="767" y="315" width="744" height="498" key="FileChooserDialogImpl/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461548342" />
+    <state width="1812" height="274" key="GridCell.Tab.0.bottom" timestamp="1576461680429">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795763" />
-    <state width="1812" height="338" key="GridCell.Tab.0.right" timestamp="1576378795764">
+    <state width="1812" height="274" key="GridCell.Tab.0.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461680429" />
+    <state width="1812" height="274" key="GridCell.Tab.0.center" timestamp="1576461680429">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795764" />
-    <state width="1812" height="338" key="GridCell.Tab.1.bottom" timestamp="1576378795764">
+    <state width="1812" height="274" key="GridCell.Tab.0.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461680429" />
+    <state width="1812" height="274" key="GridCell.Tab.0.left" timestamp="1576461680429">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795764" />
-    <state width="1812" height="338" key="GridCell.Tab.1.center" timestamp="1576378795764">
+    <state width="1812" height="274" key="GridCell.Tab.0.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461680429" />
+    <state width="1812" height="274" key="GridCell.Tab.0.right" timestamp="1576461680429">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795764" />
-    <state width="1812" height="338" key="GridCell.Tab.1.left" timestamp="1576378795764">
+    <state width="1812" height="274" key="GridCell.Tab.0.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461680429" />
+    <state width="1812" height="338" key="GridCell.Tab.1.bottom" timestamp="1576461429035">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795764" />
-    <state width="1812" height="338" key="GridCell.Tab.1.right" timestamp="1576378795764">
+    <state width="1812" height="338" key="GridCell.Tab.1.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461429035" />
+    <state width="1812" height="338" key="GridCell.Tab.1.center" timestamp="1576461429035">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576378795764" />
-    <state x="472" y="131" width="1024" height="852" key="SettingsEditor" timestamp="1576371569143">
+    <state width="1812" height="338" key="GridCell.Tab.1.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461429035" />
+    <state width="1812" height="338" key="GridCell.Tab.1.left" timestamp="1576461429035">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state x="472" y="131" width="1024" height="852" key="SettingsEditor/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576371569143" />
+    <state width="1812" height="338" key="GridCell.Tab.1.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461429035" />
+    <state width="1812" height="338" key="GridCell.Tab.1.right" timestamp="1576461429035">
+      <screen x="58" y="27" width="1862" height="1053" />
+    </state>
+    <state width="1812" height="338" key="GridCell.Tab.1.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461429035" />
+    <state x="472" y="131" width="1270" height="852" key="SettingsEditor" timestamp="1576461552265">
+      <screen x="58" y="27" width="1862" height="1053" />
+    </state>
+    <state x="472" y="131" width="1270" height="852" key="SettingsEditor/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576461552265" />
+    <state x="644" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1576439631249">
+      <screen x="58" y="27" width="1862" height="1053" />
+    </state>
+    <state x="644" y="381" key="com.intellij.ide.util.TipDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576439631249" />
+    <state x="1920" y="0" width="1485" height="900" maximized="true" key="dock-window-1" timestamp="1576450679078">
+      <screen x="1920" y="0" width="1600" height="900" />
+    </state>
+    <state x="1920" y="0" width="1485" height="900" maximized="true" key="dock-window-1/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576450679078" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/TestNetLogo.java</url>
+          <line>5</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

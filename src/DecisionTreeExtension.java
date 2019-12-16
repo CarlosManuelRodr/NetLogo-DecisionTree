@@ -1,20 +1,19 @@
-import org.nlogo.api.Argument;
-import org.nlogo.api.Command;
-import org.nlogo.api.Context;
-import org.nlogo.api.ExtensionException;
-import org.nlogo.api.LogoException;
-import org.nlogo.api.LogoListBuilder;
-import org.nlogo.api.Reporter;
+import org.nlogo.api.*;
 import org.nlogo.core.CompilerException;
 import org.nlogo.core.LogoList;
 import org.nlogo.core.Syntax;
 import org.nlogo.core.SyntaxJ;
 import org.nlogo.core.ExtensionObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
+import weka.core.Attribute;
 import weka.core.Instances;
 import weka.classifiers.trees.J48;
+import weka.classifiers.meta.FilteredClassifier;
+import weka.filters.unsupervised.attribute.Discretize;
 
 public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 {
@@ -26,7 +25,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         primManager.addPrimitive("put-instance", new InstancePut());          // put-instance <instance> <key> <value>
         primManager.addPrimitive("remove-instance", new InstanceRemove());    // remove-instance <instance> <key> <value>
 
-        primManager.addPrimitive("make-classifier", new ClassifierMake());    // make-classifier <number_of_attributes> <class_index>
+        primManager.addPrimitive("make-classifier", new ClassifierMake());    // make-classifier [attribute_names] [attribute_types] <class_index>
         primManager.addPrimitive("clear-classifier", new ClassifierClear());  // clear-classifier <classifier>
         primManager.addPrimitive("addto-classifier", new ClassifierAddTo());  // addto-classifier <classifier> <instance>
 
@@ -43,12 +42,51 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     public static class J48Classifier implements ExtensionObject
     {
-        public Instances instances;
-        public J48 classifier;
+        public Instances train_data;
+        public J48 j48_classifier;
+        public FilteredClassifier filteredClassifier;
+
+        private Discretize discretizationFilter;
 
         public J48Classifier()
         {
 
+        }
+
+        public J48Classifier(LogoList attribute_names, LogoList attribute_types, int class_index) throws ExtensionException
+        {
+            // Build attribute list
+            ArrayList<Attribute> attributes = new ArrayList<Attribute>(attribute_names.length());
+            for (int i = 0; i<attribute_names.length(); i++)
+            {
+                Object type = attribute_types.get(i);
+                if (type instanceof String)
+                {
+                    attributes.add(new Attribute(attribute_names.get(i).toString()));
+                }
+                else if (type instanceof LogoList)
+                {
+                    LogoList possible_class_values = (LogoList) type;
+                    List class_values = new ArrayList(possible_class_values.length());
+
+                    for (Iterator<Object> it = possible_class_values.javaIterator(); it.hasNext();)
+                        class_values.add(it.next());
+
+                    attributes.add(new Attribute(attribute_names.get(i).toString(), class_values));
+                }
+                else
+                    throw new ExtensionException("invalid entry at index " + i + ", in attribute_types list " + Dump.logoObject(type));
+            }
+
+            // Initialize
+            train_data = new Instances("train_data", attributes, 0);
+            train_data.setClassIndex(class_index);
+            discretizationFilter = new Discretize();
+            j48_classifier = new J48();
+            j48_classifier.setUnpruned(true);
+            filteredClassifier = new FilteredClassifier();
+            filteredClassifier.setFilter(discretizationFilter);
+            filteredClassifier.setClassifier(j48_classifier);
         }
 
         public String dump(boolean readable, boolean exportable, boolean reference)
@@ -82,9 +120,17 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
         }
 
-        public void perform(Argument args[], Context context)
-                throws ExtensionException, LogoException
+        public void perform(Argument args[], Context context) throws ExtensionException, LogoException
         {
+            Object arg0 = args[0].get();
+            if (arg0 instanceof J48Classifier)
+            {
+                J48Classifier j48 = (J48Classifier) arg0;
+                j48.j48_classifier = new J48();
+                j48.train_data.clear();
+            }
+            else
+                throw new ExtensionException("not a classifier" + Dump.logoObject(arg0));
 
         }
     }

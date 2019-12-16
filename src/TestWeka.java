@@ -1,12 +1,16 @@
-import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import weka.core.DenseInstance;
 import weka.core.Instances;
+import weka.core.Instance;
+import weka.core.Attribute;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.unsupervised.attribute.Discretize;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.trees.J48;
 
-public class TestClassifier
+public class TestWeka
 {
     public static void main(String[] args) throws Exception
     {
@@ -15,8 +19,41 @@ public class TestClassifier
         Instances train = trainSource.getDataSet();
         train.setClassIndex(train.numAttributes() - 1);
 
-        DataSource testSource = new DataSource("test/iris-test.arff");
-        Instances test = testSource.getDataSet();
+        // Create test dataset manually
+        ArrayList<Attribute> atts = new ArrayList<Attribute>(5);
+        atts.add(new Attribute("sepallength"));
+        atts.add(new Attribute("sepalwidth"));
+        atts.add(new Attribute("petallength"));
+        atts.add(new Attribute("petalwidth"));
+
+        List class_values = new ArrayList(3);
+        class_values.add("Iris-setosa");
+        class_values.add("Iris-versicolor");
+        class_values.add("Iris-virginica");
+        atts.add(new Attribute("class", class_values));
+
+        Instances test = new Instances("testdata", atts, 0);
+        Instance inst = new DenseInstance(5);
+        inst.setValue(0, 5.1);
+        inst.setValue(1, 3.5);
+        inst.setValue(2, 1.4);
+        inst.setValue(3, 0.2);
+        test.add(inst);
+
+        inst = new DenseInstance(5);
+        inst.setValue(0, 4.9);
+        inst.setValue(1, 3.0);
+        inst.setValue(2, 1.4);
+        inst.setValue(3, 0.2);
+        test.add(inst);
+
+        inst = new DenseInstance(5);
+        inst.setValue(0, 7.0);
+        inst.setValue(1, 3.2);
+        inst.setValue(2, 4.7);
+        inst.setValue(3, 1.4);
+        test.add(inst);
+
         test.setClassIndex(train.numAttributes() - 1);
 
         // Filter
