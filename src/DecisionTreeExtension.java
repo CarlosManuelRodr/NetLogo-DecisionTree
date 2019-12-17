@@ -18,22 +18,26 @@ import weka.classifiers.trees.J48;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.filters.unsupervised.attribute.Discretize;
 
+/**
+ * This is an extension to make J48 decision trees in NetLogo
+ * @author github.com/CarlosManuelRodr
+ *
+ */
+
 public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 {
 
     public void load(org.nlogo.api.PrimitiveManager primManager)
     {
-        primManager.addPrimitive("clear-instance", new InstanceClear());      // clear-instance <instance>
         primManager.addPrimitive("make-instance", new InstanceMake());        // make-instance
         primManager.addPrimitive("put-instance", new InstancePut());          // put-instance <instance> <key> <value>
-        primManager.addPrimitive("remove-instance", new InstanceRemove());    // remove-instance <instance> <key> <value>
 
         primManager.addPrimitive("make-classifier", new ClassifierMake());    // make-classifier [attribute_names] [attribute_types] <class_index>
         primManager.addPrimitive("clear-classifier", new ClassifierClear());  // clear-classifier <classifier>
         primManager.addPrimitive("addto-classifier", new ClassifierAddTo());  // addto-classifier <classifier> <instance>
 
-        primManager.addPrimitive("train", new InstanceRemove());              // train <classifier>
-        primManager.addPrimitive("classify", new InstanceRemove());           // classify <classifier> <instance>
+        primManager.addPrimitive("train", new InstanceMake());                // train <classifier>
+        primManager.addPrimitive("classify", new InstanceMake());             // classify <classifier> <instance>
     }
 
     /***********************************
@@ -42,7 +46,9 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
      *                                 *
      **********************************/
 
-
+    /**
+     * NetLogo object that contains the classifier and the train data.
+     */
     public static class J48Classifier implements ExtensionObject
     {
         public Instances train_data;
@@ -122,6 +128,9 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
+    /**
+     * Command to reinitialize the classifier object. Syntax: clear-classifier <classifier>
+     */
     public static class ClassifierClear implements Command
     {
         public Syntax getSyntax(){
@@ -142,15 +151,16 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
+    /**
+     * Command to add an instance to the classifier object. Syntax: addto-classifier <classifier> <instance>
+     */
     public static class ClassifierAddTo implements Command
     {
         public Syntax getSyntax() {
-            return SyntaxJ.commandSyntax
-                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType()});
+            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType()});
         }
 
-        public void perform(Argument[] args, Context context)
-                throws ExtensionException, LogoException
+        public void perform(Argument[] args, Context context) throws ExtensionException, LogoException
         {
             if (args.length != 2)
                 throw new ExtensionException("Incorrect number of arguments");
@@ -173,6 +183,14 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
+    /**
+     * Command to create the classifier object.
+     * Syntax: make-classifier [attribute_names] [attribute_types] <class_index>
+     * The list [attribute_types] must contain an empty list [] if the corresponding attribute is numeric
+     * or a list containing the possible string values if the corresponding attribute is nominal.
+     * <class_index> is the index of the attribute to be predicted in the classifier.
+     * Example: decision-tree:make-classifier ["sepal-length" "sepal-width" "petal-length" "petal-width" "species"] [[] [] [] [] ["setosa" "versicolor" "virginica"]] 4
+     */
     public static class ClassifierMake implements Reporter
     {
         public Syntax getSyntax() {
@@ -217,23 +235,17 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
      *                             *
      ******************************/
 
-    // TableInstance is just a stripped down version of the Table extension. Here is used as
-    // holder for Instances that will be passed to Weka.
-    // Source: https://github.com/NetLogo/Table-Extension
-
     private static java.util.WeakHashMap<TableInstance, Long> tables = new java.util.WeakHashMap<TableInstance, Long>();
-
     private static long nextTable = 0;
 
-    // It's important that we extend LinkedHashMap here, rather than
-    // plain HashMap, because we want model results to be reproducible
-    // cross-platform.
+    /**
+     * Object that represents a data instance exposed to NetLogo just as "instance". This class is
+     * just a stripped down version of the Table extension. Here is used as holder for Instances that will be passed to Weka
+     * in its own Instance data type.
+     * Original source: https://github.com/NetLogo/Table-Extension
+     */
 
-    public static class TableInstance
-            extends java.util.LinkedHashMap<Object, Object>
-            // new NetLogo data types defined by extensions must implement
-            // this interface
-            implements ExtensionObject
+    public static class TableInstance extends java.util.LinkedHashMap<Object, Object> implements ExtensionObject
     {
         private final long id;
 
@@ -316,22 +328,9 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         }
     }
 
-    public static class InstanceClear implements Command
-    {
-        public Syntax getSyntax() {
-            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
-        }
-
-        public void perform(Argument args[], Context context) throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
-            }
-            ((TableInstance) arg0).clear();
-        }
-    }
-
+    /**
+     * Reporter that creates an empty instance object. Syntax: make-instance
+     */
     public static class InstanceMake implements Reporter
     {
         public Syntax getSyntax() {
@@ -344,6 +343,9 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     }
 
+    /**
+     * Command to put a key-value pair in the instance. Syntax: put-instance <instance> <key> <value>
+     */
     public static class InstancePut implements Command
     {
         public Syntax getSyntax() {
@@ -360,23 +362,6 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             Object key = args[1].get();
             ensureKeyValidity(key);
             ((TableInstance) arg0).put(key, args[2].get());
-        }
-    }
-
-    public static class InstanceRemove implements Command
-    {
-        public Syntax getSyntax() {
-            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType()});
-        }
-
-        public void perform(Argument args[], Context context)
-                throws ExtensionException, LogoException
-        {
-            Object arg0 = args[0].get();
-            if (!(arg0 instanceof TableInstance)) {
-                throw new org.nlogo.api.ExtensionException("not an instance: " + org.nlogo.api.Dump.logoObject(arg0));
-            }
-            ((TableInstance) arg0).remove(args[1].get());
         }
     }
 
@@ -403,8 +388,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
     }
 
     public void importWorld(java.util.List<String[]> lines, org.nlogo.api.ExtensionManager reader,
-                            org.nlogo.api.ImportErrorHandler handler)
-            throws ExtensionException
+                            org.nlogo.api.ImportErrorHandler handler) throws ExtensionException
     {
         for (String[] line : lines)
         {

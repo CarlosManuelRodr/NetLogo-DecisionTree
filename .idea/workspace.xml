@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="edc9c64e-51ff-486d-8990-3d0d09cacdff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NetLogoDecisionTree.iml" beforeDir="false" afterPath="$PROJECT_DIR$/NetLogoDecisionTree.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/decision-tree/decision-tree.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/decision-tree/decision-tree.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DecisionTreeExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DecisionTreeExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestNetLogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestNetLogo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +102,7 @@
       <workItem from="1576290366313" duration="3000" />
       <workItem from="1576359156215" duration="16039000" />
       <workItem from="1576439626190" duration="10281000" />
-      <workItem from="1576535371937" duration="14574000" />
+      <workItem from="1576535371937" duration="16904000" />
     </task>
     <servers />
   </component>
@@ -146,38 +142,38 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state x="767" y="315" width="744" height="498" key="FileChooserDialogImpl/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576535643889" />
-    <state width="1812" height="338" key="GridCell.Tab.0.bottom" timestamp="1576556974859">
+    <state width="1812" height="274" key="GridCell.Tab.0.bottom" timestamp="1576559179716">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974859" />
-    <state width="1812" height="338" key="GridCell.Tab.0.center" timestamp="1576556974859">
+    <state width="1812" height="274" key="GridCell.Tab.0.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179716" />
+    <state width="1812" height="274" key="GridCell.Tab.0.center" timestamp="1576559179716">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974859" />
-    <state width="1812" height="338" key="GridCell.Tab.0.left" timestamp="1576556974859">
+    <state width="1812" height="274" key="GridCell.Tab.0.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179716" />
+    <state width="1812" height="274" key="GridCell.Tab.0.left" timestamp="1576559179716">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974859" />
-    <state width="1812" height="338" key="GridCell.Tab.0.right" timestamp="1576556974859">
+    <state width="1812" height="274" key="GridCell.Tab.0.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179716" />
+    <state width="1812" height="274" key="GridCell.Tab.0.right" timestamp="1576559179716">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.0.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974859" />
-    <state width="1812" height="338" key="GridCell.Tab.1.bottom" timestamp="1576556974860">
+    <state width="1812" height="274" key="GridCell.Tab.0.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179716" />
+    <state width="1812" height="338" key="GridCell.Tab.1.bottom" timestamp="1576559179711">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974860" />
-    <state width="1812" height="338" key="GridCell.Tab.1.center" timestamp="1576556974860">
+    <state width="1812" height="338" key="GridCell.Tab.1.bottom/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179711" />
+    <state width="1812" height="338" key="GridCell.Tab.1.center" timestamp="1576559179711">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974860" />
-    <state width="1812" height="338" key="GridCell.Tab.1.left" timestamp="1576556974860">
+    <state width="1812" height="338" key="GridCell.Tab.1.center/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179711" />
+    <state width="1812" height="338" key="GridCell.Tab.1.left" timestamp="1576559179710">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974860" />
-    <state width="1812" height="338" key="GridCell.Tab.1.right" timestamp="1576556974860">
+    <state width="1812" height="338" key="GridCell.Tab.1.left/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179710" />
+    <state width="1812" height="338" key="GridCell.Tab.1.right" timestamp="1576559179711">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state width="1812" height="338" key="GridCell.Tab.1.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576556974860" />
+    <state width="1812" height="338" key="GridCell.Tab.1.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576559179711" />
     <state x="472" y="131" width="1270" height="852" key="SettingsEditor" timestamp="1576535647602">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
@@ -190,16 +186,5 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state x="401" y="181" width="1431" height="835" key="dock-window-1/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576552970235" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DecisionTreeExtension.java</url>
-          <line>154</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

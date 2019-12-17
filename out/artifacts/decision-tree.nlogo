@@ -19,12 +19,15 @@ turtles-own
 to setup
   ca
   reset-ticks
+
+  ; Load iris dataset and get a subset of size "plants"
   let iris-dataset csv:from-file "../../test/iris.csv"
   let attributes item 0 iris-dataset
   let subset n-of plants but-first iris-dataset
 
   ask patches [set has-plant false]
 
+  ; Set patches with values from the dataset
   let i 0
   ask n-of plants patches
   [
@@ -40,6 +43,7 @@ to setup
     set i i + 1
   ]
 
+  ; Create botaninst turtles with a decision-tree classifier
   crt botanists
   [
     move-to one-of patches
@@ -54,10 +58,12 @@ end
 to go
   ask turtles
   [
+    ; Move to unvisited patch
     let unvisited patches with [not member? self [visited] of myself]
     move-to one-of unvisited
     set visited lput patch-here visited
 
+    ; Add plant to classifier
     if has-plant
     [
       let instance decision-tree:make-instance
