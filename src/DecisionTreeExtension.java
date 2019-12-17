@@ -1,4 +1,5 @@
 import org.nlogo.api.*;
+import org.nlogo.api.Dump;
 import org.nlogo.core.CompilerException;
 import org.nlogo.core.LogoList;
 import org.nlogo.core.Syntax;
@@ -9,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import weka.core.DenseInstance;
 import weka.core.Attribute;
 import weka.core.Instances;
+import weka.core.Instance;
 import weka.classifiers.trees.J48;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.filters.unsupervised.attribute.Discretize;
@@ -44,49 +47,51 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
     {
         public Instances train_data;
         public J48 j48_classifier;
-        public FilteredClassifier filteredClassifier;
+        public FilteredClassifier filtered_classifier;
 
-        private Discretize discretizationFilter;
-
-        public J48Classifier()
-        {
-
-        }
+        private ArrayList<Attribute> attributes;
+        private int m_class_index;
 
         public J48Classifier(LogoList attribute_names, LogoList attribute_types, int class_index) throws ExtensionException
         {
             // Build attribute list
-            ArrayList<Attribute> attributes = new ArrayList<Attribute>(attribute_names.length());
+            attributes = new ArrayList<Attribute>(attribute_names.length());
+            m_class_index = class_index;
             for (int i = 0; i<attribute_names.length(); i++)
             {
                 Object type = attribute_types.get(i);
-                if (type instanceof String)
-                {
-                    attributes.add(new Attribute(attribute_names.get(i).toString()));
-                }
-                else if (type instanceof LogoList)
+                if (type instanceof LogoList)
                 {
                     LogoList possible_class_values = (LogoList) type;
-                    List class_values = new ArrayList(possible_class_values.length());
+                    if (possible_class_values.length() == 0) {
+                        attributes.add(new Attribute(attribute_names.get(i).toString()));
+                    }
+                    else
+                    {
 
-                    for (Iterator<Object> it = possible_class_values.javaIterator(); it.hasNext();)
-                        class_values.add(it.next());
+                        List class_values = new ArrayList(possible_class_values.length());
+                        for (Iterator<Object> it = possible_class_values.javaIterator(); it.hasNext(); )
+                            class_values.add(it.next());
 
-                    attributes.add(new Attribute(attribute_names.get(i).toString(), class_values));
+                        attributes.add(new Attribute(attribute_names.get(i).toString(), class_values));
+                    }
                 }
                 else
                     throw new ExtensionException("invalid entry at index " + i + ", in attribute_types list " + Dump.logoObject(type));
             }
+            this.setup();
+        }
 
-            // Initialize
+        public void setup()
+        {
             train_data = new Instances("train_data", attributes, 0);
-            train_data.setClassIndex(class_index);
-            discretizationFilter = new Discretize();
+            train_data.setClassIndex(m_class_index);
+            Discretize discretization_filter = new Discretize();
             j48_classifier = new J48();
             j48_classifier.setUnpruned(true);
-            filteredClassifier = new FilteredClassifier();
-            filteredClassifier.setFilter(discretizationFilter);
-            filteredClassifier.setClassifier(j48_classifier);
+            filtered_classifier = new FilteredClassifier();
+            filtered_classifier.setFilter(discretization_filter);
+            filtered_classifier.setClassifier(j48_classifier);
         }
 
         public String dump(boolean readable, boolean exportable, boolean reference)
@@ -95,8 +100,11 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             if (exportable && reference) {
                 return ("" + id);
             }
-            else {
-                return (exportable ? (id + ": ") : "") + org.nlogo.api.Dump.logoObject("dump text", true, exportable);
+            else
+            {
+                String dumpTxt = "Number of train instances: " + train_data.size();
+                dumpTxt += " Decision Tree: " + j48_classifier.toString();
+                return (exportable ? (id + ": ") : "") + Dump.logoObject(dumpTxt, true, exportable);
             }
         }
 
@@ -116,7 +124,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
 
     public static class ClassifierClear implements Command
     {
-        public Syntax getSyntax() {
+        public Syntax getSyntax(){
             return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
         }
 
@@ -126,8 +134,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             if (arg0 instanceof J48Classifier)
             {
                 J48Classifier j48 = (J48Classifier) arg0;
-                j48.j48_classifier = new J48();
-                j48.train_data.clear();
+                j48.setup();
             }
             else
                 throw new ExtensionException("not a classifier" + Dump.logoObject(arg0));
@@ -139,26 +146,67 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
     {
         public Syntax getSyntax() {
             return SyntaxJ.commandSyntax
-                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType(),
-                            Syntax.WildcardType()});
+                    (new int[]{Syntax.WildcardType(), Syntax.WildcardType()});
         }
 
-        public void perform(Argument args[], Context context)
+        public void perform(Argument[] args, Context context)
                 throws ExtensionException, LogoException
         {
+            if (args.length != 2)
+                throw new ExtensionException("Incorrect number of arguments");
 
+            Object arg0 = args[0].get();
+            Object arg1 = args[1].get();
+            if (arg0 instanceof J48Classifier)
+            {
+                J48Classifier j48 = (J48Classifier) arg0;
+                if (arg1 instanceof TableInstance)
+                {
+                    TableInstance tableInstance = (TableInstance) arg1;
+                    j48.train_data.add(tableInstance.getWekaInstance(j48.attributes));
+                }
+                else
+                    throw new ExtensionException("Not a instance " + Dump.logoObject(arg1));
+            }
+            else
+                throw new ExtensionException("Not a classifier " + Dump.logoObject(arg0));
         }
     }
 
     public static class ClassifierMake implements Reporter
     {
         public Syntax getSyntax() {
-            return SyntaxJ.reporterSyntax(Syntax.WildcardType());
+            return SyntaxJ.reporterSyntax(
+                    new int[]{Syntax.WildcardType(), Syntax.WildcardType(), Syntax.WildcardType()},
+                    Syntax.WildcardType()
+            );
         }
 
-        public Object report(Argument args[], Context context)
-                throws ExtensionException, LogoException {
-            return new J48Classifier();
+        public Object report(Argument[] args, Context context) throws ExtensionException, LogoException
+        {
+            if (args.length == 3)
+            {
+                Object arg0 = args[0].get();
+                Object arg1 = args[1].get();
+                Object arg2 = args[2].get();
+
+                if (arg0 instanceof LogoList)
+                {
+                    if (arg1 instanceof LogoList)
+                    {
+                        if (arg2 instanceof Double)
+                            return new J48Classifier((LogoList) arg0, (LogoList) arg1, ((Double) arg2).intValue() );
+                        else
+                            throw new ExtensionException("Expecting a integer in argument 2: " + Dump.logoObject(arg2));
+                    }
+                    else
+                        throw new ExtensionException("Expecting a list in argument 1: " + Dump.logoObject(arg1));
+                }
+                else
+                    throw new ExtensionException("Expecting a list in argument 0: " + Dump.logoObject(arg0));
+            }
+            else
+                throw new ExtensionException("Incorrect number of arguments");
         }
 
     }
@@ -250,6 +298,22 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             }
             return true;
         }
+
+        public Instance getWekaInstance(ArrayList<Attribute> attributes)
+        {
+            Instance inst = new DenseInstance(attributes.size());
+            attributes.forEach((attr) -> {
+                if (this.containsKey(attr.name()))
+                {
+                    Object value = this.get(attr.name());
+                    if (value instanceof Double)
+                        inst.setValue(attr, (Double) value);
+                    else
+                        inst.setValue(attr, (String) value);
+                }
+            });
+            return inst;
+        }
     }
 
     public static class InstanceClear implements Command
@@ -274,7 +338,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             return SyntaxJ.reporterSyntax(Syntax.WildcardType());
         }
 
-        public Object report(Argument args[], Context context) throws ExtensionException, LogoException {
+        public Object report(Argument args[], Context context) throws LogoException {
             return new TableInstance();
         }
 

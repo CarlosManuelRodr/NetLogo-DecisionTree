@@ -29,11 +29,11 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/libs/lib" />
+          <root url="file://$MODULE_DIR$/libs/netlogo_libs" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/libs/lib" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/libs/netlogo_libs" recursive="false" />
       </library>
     </orderEntry>
   </component>

@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Extension-Name: decision-tree
 Class-Manager: DecisionTreeExtension
-NetLogo-Extension-API-Version: 6.0
+NetLogo-Extension-API-Version: 6.1

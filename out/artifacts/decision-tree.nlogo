@@ -1,10 +1,74 @@
-extensions [decision-tree]
+extensions [csv decision-tree]
+
+patches-own
+[
+  has-plant
+  sepal-length
+  sepal-width
+  petal-length
+  petal-width
+  species
+]
+
+turtles-own
+[
+  classifier
+  visited
+]
+
+to setup
+  ca
+  reset-ticks
+  let iris-dataset csv:from-file "../../test/iris.csv"
+  let attributes item 0 iris-dataset
+  let subset n-of plants but-first iris-dataset
+
+  ask patches [set has-plant false]
+
+  let i 0
+  ask n-of plants patches
+  [
+    set sepal-length item 0 item i subset
+    set sepal-width item 1 item i subset
+    set petal-length item 2 item i subset
+    set petal-width item 3 item i subset
+    set species item 4 item i subset
+    (ifelse species = "setosa" [set pcolor red]
+    species = "versicolor" [set pcolor green]
+    species = "virginica" [set pcolor blue])
+    set has-plant true
+    set i i + 1
+  ]
+
+  crt botanists
+  [
+    move-to one-of patches
+    set visited (list patch-here)
+    set classifier (decision-tree:make-classifier
+     attributes
+     [[] [] [] [] ["setosa" "versicolor" "virginica"]]
+     4)
+  ]
+end
 
 to go
-  let dict decision-tree:make-instance
-  decision-tree:put-instance dict "turtle" "cute"
-  decision-tree:put-instance dict "bunny" "cutest"
-  print dict
+  ask turtles
+  [
+    let unvisited patches with [not member? self [visited] of myself]
+    move-to one-of unvisited
+    set visited lput patch-here visited
+
+    if has-plant
+    [
+      let instance decision-tree:make-instance
+      decision-tree:put-instance instance "sepal-length" sepal-length
+      decision-tree:put-instance instance "sepal-width" sepal-width
+      decision-tree:put-instance instance "petal-length" petal-length
+      decision-tree:put-instance instance "petal-width" petal-width
+      decision-tree:put-instance instance "species" species
+      decision-tree:addto-classifier classifier instance
+    ]
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -35,10 +99,10 @@ ticks
 30.0
 
 BUTTON
-64
-72
-127
-105
+110
+55
+173
+88
 NIL
 go
 NIL
@@ -50,6 +114,53 @@ NIL
 NIL
 NIL
 1
+
+BUTTON
+35
+55
+108
+88
+NIL
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+20
+100
+192
+133
+plants
+plants
+1
+150
+150.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+20
+145
+192
+178
+botanists
+botanists
+1
+10
+1.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -410,5 +521,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-0
+1
 @#$#@#$#@
