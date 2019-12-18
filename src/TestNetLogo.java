@@ -8,8 +8,8 @@ public class TestNetLogo
         {
             workspace.open("out/artifacts/decision-tree.nlogo",true);
             workspace.command("setup");
-            while (true)
-                workspace.command("go");
+            workspace.command("go");
+            workspace.command("test");
         }
         catch(Exception ex) {
             ex.printStackTrace();

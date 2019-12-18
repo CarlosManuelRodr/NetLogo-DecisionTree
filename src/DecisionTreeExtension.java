@@ -35,9 +35,8 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         primManager.addPrimitive("make-classifier", new ClassifierMake());    // make-classifier [attribute_names] [attribute_types] <class_index>
         primManager.addPrimitive("clear-classifier", new ClassifierClear());  // clear-classifier <classifier>
         primManager.addPrimitive("addto-classifier", new ClassifierAddTo());  // addto-classifier <classifier> <instance>
-
-        primManager.addPrimitive("train", new InstanceMake());                // train <classifier>
-        primManager.addPrimitive("classify", new InstanceMake());             // classify <classifier> <instance>
+        primManager.addPrimitive("train-classifier", new ClassifierTrain());  // train-classifier <classifier>
+        primManager.addPrimitive("classify", new Classify());             // classify <classifier> <instance>
     }
 
     /***********************************
@@ -146,7 +145,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
                 j48.setup();
             }
             else
-                throw new ExtensionException("not a classifier" + Dump.logoObject(arg0));
+                throw new ExtensionException("Not a classifier" + Dump.logoObject(arg0));
 
         }
     }
@@ -227,6 +226,77 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
                 throw new ExtensionException("Incorrect number of arguments");
         }
 
+    }
+
+    /**
+     * Command to train the classifier object. Syntax: train-classifier <classifier>
+     */
+    public static class ClassifierTrain implements Command
+    {
+        public Syntax getSyntax(){
+            return SyntaxJ.commandSyntax(new int[]{Syntax.WildcardType()});
+        }
+
+        public void perform(Argument args[], Context context) throws ExtensionException, LogoException
+        {
+            Object arg0 = args[0].get();
+            if (arg0 instanceof J48Classifier)
+            {
+                J48Classifier j48 = (J48Classifier) arg0;
+                Instances train_data = j48.train_data;
+                try {
+                    j48.filtered_classifier.buildClassifier(train_data);
+                } catch (Exception e) {
+                    throw new ExtensionException("Weka error: " + e.toString());
+                }
+            }
+            else
+                throw new ExtensionException("Not a classifier" + Dump.logoObject(arg0));
+
+        }
+    }
+
+    /**
+     * Command to train the classifier object. Syntax: classify <classifier> <instance>
+     */
+    public static class Classify implements Reporter
+    {
+        public Syntax getSyntax(){
+            return SyntaxJ.reporterSyntax(new int[]{Syntax.WildcardType(), Syntax.WildcardType()}, Syntax.StringType());
+        }
+
+        public Object report(Argument args[], Context context) throws ExtensionException, LogoException
+        {
+            if (args.length != 2)
+                throw new ExtensionException("Incorrect number of arguments");
+
+            Object arg0 = args[0].get();
+            Object arg1 = args[1].get();
+            if (arg0 instanceof J48Classifier)
+            {
+                J48Classifier j48 = (J48Classifier) arg0;
+                if (arg1 instanceof TableInstance)
+                {
+                    TableInstance query = (TableInstance) arg1;
+                    try
+                    {
+                        Instance wekaInstance = query.getWekaInstance(j48.attributes);
+                        wekaInstance.setDataset(j48.train_data);
+                        double pred = j48.filtered_classifier.classifyInstance(wekaInstance);
+                        return j48.train_data.classAttribute().value((int) pred);
+
+                    }
+                    catch (Exception e) {
+                        throw new ExtensionException("Weka error: " + e.toString());
+                    }
+
+                }
+                else
+                    throw new ExtensionException("Not a instance " + Dump.logoObject(arg1));
+            }
+            else
+                throw new ExtensionException("Not a classifier " + Dump.logoObject(arg0));
+        }
     }
 
     /*******************************

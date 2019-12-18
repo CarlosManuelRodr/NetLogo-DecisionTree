@@ -13,6 +13,7 @@ patches-own
 turtles-own
 [
   classifier
+  is-trained
   visited
 ]
 
@@ -25,7 +26,10 @@ to setup
   let attributes item 0 iris-dataset
   let subset n-of plants but-first iris-dataset
 
-  ask patches [set has-plant false]
+  ask patches
+  [
+    set has-plant false
+  ]
 
   ; Set patches with values from the dataset
   let i 0
@@ -47,7 +51,10 @@ to setup
   crt botanists
   [
     move-to one-of patches
+    set is-trained false
     set visited (list patch-here)
+    create-temporary-plot-pen (word who)
+
     set classifier (decision-tree:make-classifier
      attributes
      [[] [] [] [] ["setosa" "versicolor" "virginica"]]
@@ -56,6 +63,9 @@ to setup
 end
 
 to go
+  tick
+  if ticks > 1000 [ stop ]
+
   ask turtles
   [
     ; Move to unvisited patch
@@ -73,7 +83,92 @@ to go
       decision-tree:put-instance instance "petal-width" petal-width
       decision-tree:put-instance instance "species" species
       decision-tree:addto-classifier classifier instance
+      decision-tree:train-classifier classifier
+      set is-trained true
     ]
+  ]
+
+  plot-success-rate
+end
+
+to test-samples
+  show "Test setosa"
+  let instance decision-tree:make-instance
+  decision-tree:put-instance instance "sepal-length" 5.4
+  decision-tree:put-instance instance "sepal-width" 3.4
+  decision-tree:put-instance instance "petal-length" 1.5
+  decision-tree:put-instance instance "petal-width" 0.4
+  ask turtles
+  [
+    if is-trained
+    [ show decision-tree:classify classifier instance ]
+  ]
+
+  show "Test versicolor"
+  set instance decision-tree:make-instance
+  decision-tree:put-instance instance "sepal-length" 6.7
+  decision-tree:put-instance instance "sepal-width" 3.1
+  decision-tree:put-instance instance "petal-length" 4.7
+  decision-tree:put-instance instance "petal-width" 1.5
+  ask turtles
+  [
+    if is-trained
+    [ show decision-tree:classify classifier instance ]
+  ]
+
+  show "Test virginica"
+  set instance decision-tree:make-instance
+  decision-tree:put-instance instance "sepal-length" 7.4
+  decision-tree:put-instance instance "sepal-width" 2.8
+  decision-tree:put-instance instance "petal-length" 6.1
+  decision-tree:put-instance instance "petal-width" 1.9
+  ask turtles
+  [
+    if is-trained
+    [ show decision-tree:classify classifier instance ]
+  ]
+end
+
+to-report success-rate
+  let iris-dataset but-first csv:from-file "../../test/iris.csv"
+  let correctly-classified 0
+  if is-trained
+  [
+    foreach iris-dataset [ values ->
+      let instance decision-tree:make-instance
+      decision-tree:put-instance instance "sepal-length" item 0 values
+      decision-tree:put-instance instance "sepal-width" item 1 values
+      decision-tree:put-instance instance "petal-length" item 2 values
+      decision-tree:put-instance instance "petal-width" item 3 values
+      let result decision-tree:classify classifier instance
+
+      if result = item 4 values [ set correctly-classified correctly-classified + 1]
+    ]
+  ]
+  report correctly-classified / length iris-dataset
+end
+
+to plot-success-rate
+  set-current-plot "success-rate"
+  ask turtles
+  [
+    set-current-plot-pen (word who)
+    set-plot-pen-color color
+    plot success-rate
+  ]
+end
+
+to test-dataset
+  ask turtles
+  [
+    show (word "Correctly classified " success-rate " percent of the dataset")
+  ]
+end
+
+to show-tree
+  ask turtles
+  [
+    if is-trained [ show classifier ]
   ]
 end
 @#$#@#$#@
@@ -98,20 +193,20 @@ GRAPHICS-WINDOW
 16
 -16
 16
-0
-0
+1
+1
 1
 ticks
 30.0
 
 BUTTON
-110
-55
-173
-88
+105
+15
+168
+48
 NIL
 go
-NIL
+T
 1
 T
 OBSERVER
@@ -122,10 +217,10 @@ NIL
 1
 
 BUTTON
-35
-55
-108
-88
+30
+15
+103
+48
 NIL
 setup
 NIL
@@ -139,10 +234,10 @@ NIL
 1
 
 SLIDER
-20
-100
-192
-133
+15
+60
+187
+93
 plants
 plants
 1
@@ -154,19 +249,87 @@ NIL
 HORIZONTAL
 
 SLIDER
-20
-145
-192
-178
+15
+105
+187
+138
 botanists
 botanists
 1
 10
-1.0
+3.0
 1
 1
 NIL
 HORIZONTAL
+
+BUTTON
+35
+150
+160
+183
+NIL
+test-samples
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+35
+230
+160
+263
+NIL
+show-tree
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+35
+190
+160
+223
+NIL
+test-dataset
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+PLOT
+705
+60
+905
+210
+success-rate
+NIL
+NIL
+0.0
+1.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
 
 @#$#@#$#@
 ## WHAT IS IT?
