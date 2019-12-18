@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="edc9c64e-51ff-486d-8990-3d0d09cacdff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NetLogoDecisionTree.iml" beforeDir="false" afterPath="$PROJECT_DIR$/NetLogoDecisionTree.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decision-tree/decision-tree.jar" beforeDir="false" afterPath="$PROJECT_DIR$/decision-tree/decision-tree.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iris-decision-tree.nlogo" beforeDir="false" afterPath="$PROJECT_DIR$/iris-decision-tree.nlogo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/NetLogoDecisionTree/META-INF/NetLogoDecisionTree.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestNetLogo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestWeka.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/iris.arff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/iris.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/decision-tree/decision-tree.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +34,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -53,7 +49,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -111,7 +107,7 @@
       <workItem from="1576359156215" duration="16039000" />
       <workItem from="1576439626190" duration="10281000" />
       <workItem from="1576535371937" duration="16904000" />
-      <workItem from="1576623542510" duration="7767000" />
+      <workItem from="1576623542510" duration="8712000" />
     </task>
     <servers />
   </component>
@@ -127,6 +123,10 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state x="447" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576637689117" />
+    <state x="725" y="387" width="518" height="339" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1576638140283">
+      <screen x="58" y="27" width="1862" height="1053" />
+    </state>
+    <state x="725" y="387" width="518" height="339" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576638140283" />
     <state x="772" y="261" width="424" height="591" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1576460910360">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
@@ -187,10 +187,10 @@
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
     <state width="1812" height="323" key="GridCell.Tab.1.right/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576637792435" />
-    <state x="472" y="131" width="1270" height="852" key="SettingsEditor" timestamp="1576637664464">
+    <state x="472" y="131" width="1270" height="852" key="SettingsEditor" timestamp="1576638993501">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
-    <state x="472" y="131" width="1270" height="852" key="SettingsEditor/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576637664464" />
+    <state x="472" y="131" width="1270" height="852" key="SettingsEditor/58.27.1862.1053/1920.0.1600.900@58.27.1862.1053" timestamp="1576638993501" />
     <state width="931" height="526" key="XDebugger.FullValuePopup" timestamp="1576628588766">
       <screen x="58" y="27" width="1862" height="1053" />
     </state>
