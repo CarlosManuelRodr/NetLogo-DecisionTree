@@ -68,7 +68,7 @@ show decision-tree:classify classifier test-instance
   [`decision-tree:make-classifier`](#decision-tree:make-classifier)
   [`decision-tree:clear-classifier`](#decision-tree:clear-classifier)
   [`decision-tree:addto-classifier`](#decision-tree:addto-classifier)
-  [`decision-tree:train-classifier`](#decision-tree:train-classifier`](#tablegroup-items)
+  [`decision-tree:train-classifier`](#decision-tree:train-classifier)
   [`decision-tree:classify`](#decision-tree:classify)
   [`decision-tree:make-instance`](#decision-tree:make-instance)
   [`decision-tree:put-instance`](#decision-tree:put-instance)
@@ -85,9 +85,11 @@ The argument `[attribute_names]` is a list containing the names of the variables
 
 #### Example:
 
-`decision-tree:make-classifier
+```
+decision-tree:make-classifier
 ["sepal-length" "sepal-width" "petal-length" "petal-width" "species"]
 [[] [] [] [] ["setosa" "versicolor" "virginica"]] 4`
+```
 
 ### `decision-tree:clear-classifier`
 
