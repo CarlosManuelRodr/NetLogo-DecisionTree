@@ -2,6 +2,8 @@
 
 An extension to learn decision trees inside NetLogo. Based on Weka's implementation.
 
+Download it [here](https://github.com/CarlosManuelRodr/NetLogo-DecisionTree/releases/download/v1.0/NetLogo-DecisionTree.zip).
+
 ## Building
 
 Use Ant to build.
