@@ -15,7 +15,7 @@ public class TestWeka
     public static void main(String[] args) throws Exception
     {
         // Load dataset
-        DataSource trainSource = new DataSource("test/iris.arff");
+        DataSource trainSource = new DataSource("sample/iris.arff");
         Instances train = trainSource.getDataSet();
         train.setClassIndex(train.numAttributes() - 1);
 

@@ -6,7 +6,7 @@ public class TestNetLogo
         HeadlessWorkspace workspace = HeadlessWorkspace.newInstance();
         try
         {
-            workspace.open("out/artifacts/decision-tree.nlogo",true);
+            workspace.open("iris-decision-tree.nlogo",true);
             workspace.command("setup");
             workspace.command("go");
             workspace.command("test");
