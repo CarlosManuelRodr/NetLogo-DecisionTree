@@ -21,7 +21,6 @@ import weka.filters.unsupervised.attribute.Discretize;
 /**
  * This is an extension to make J48 decision trees in NetLogo
  * @author github.com/CarlosManuelRodr
- *
  */
 
 public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
@@ -50,12 +49,12 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
      */
     public static class J48Classifier implements ExtensionObject
     {
-        public Instances train_data;
-        public J48 j48_classifier;
-        public FilteredClassifier filtered_classifier;
+        public Instances train_data;                    // Weka holder for the train instances
+        public J48 j48_classifier;                      // Weka classifier
+        public FilteredClassifier filtered_classifier;  // Meta-classifier to filter numeric data to nominal on-the-fly
 
-        private ArrayList<Attribute> attributes;
-        private int m_class_index;
+        private ArrayList<Attribute> attributes;        // Attributes of the dataset
+        private int m_class_index;                      // Index of the class to be predicted
 
         public J48Classifier(LogoList attribute_names, LogoList attribute_types, int class_index) throws ExtensionException
         {
@@ -65,15 +64,14 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
             for (int i = 0; i<attribute_names.length(); i++)
             {
                 Object type = attribute_types.get(i);
-                if (type instanceof LogoList)
+                if (type instanceof LogoList) // Check that all attribute types are lists
                 {
                     LogoList possible_class_values = (LogoList) type;
-                    if (possible_class_values.length() == 0) {
+                    if (possible_class_values.length() == 0) { // Numeric type
                         attributes.add(new Attribute(attribute_names.get(i).toString()));
                     }
-                    else
+                    else  // Nominal type
                     {
-
                         List class_values = new ArrayList(possible_class_values.length());
                         for (Iterator<Object> it = possible_class_values.javaIterator(); it.hasNext(); )
                             class_values.add(it.next());
