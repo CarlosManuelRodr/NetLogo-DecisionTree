@@ -22,7 +22,7 @@ to setup
   reset-ticks
 
   ; Load iris dataset and get a subset of size "plants"
-  let iris-dataset csv:from-file "../../test/iris.csv"
+  let iris-dataset csv:from-file "test/iris.csv"
   let attributes item 0 iris-dataset
   let subset n-of plants but-first iris-dataset
 
@@ -130,7 +130,7 @@ to test-samples
 end
 
 to-report success-rate
-  let iris-dataset but-first csv:from-file "../../test/iris.csv"
+  let iris-dataset but-first csv:from-file "test/iris.csv"
   let correctly-classified 0
   if is-trained
   [

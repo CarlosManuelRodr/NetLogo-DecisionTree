@@ -36,7 +36,7 @@ public class DecisionTreeExtension extends org.nlogo.api.DefaultClassManager
         primManager.addPrimitive("clear-classifier", new ClassifierClear());  // clear-classifier <classifier>
         primManager.addPrimitive("addto-classifier", new ClassifierAddTo());  // addto-classifier <classifier> <instance>
         primManager.addPrimitive("train-classifier", new ClassifierTrain());  // train-classifier <classifier>
-        primManager.addPrimitive("classify", new Classify());             // classify <classifier> <instance>
+        primManager.addPrimitive("classify", new Classify());                 // classify <classifier> <instance>
     }
 
     /***********************************
