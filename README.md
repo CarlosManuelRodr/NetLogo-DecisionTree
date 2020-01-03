@@ -109,7 +109,7 @@ decision-tree:addto-classifier <classifier> <instance>
 
 Add instance to the classifier. If the instance contains a attribute that is not present in the classifier, it is ignored.
 
-**`decision-tree:train-classifier`**
+### `decision-tree:train-classifier`
 
 ```NetLogo
 decision-tree:train-classifier <classifier>
@@ -117,7 +117,7 @@ decision-tree:train-classifier <classifier>
 
 Train the classifier with the given instances.
 
-**`decision-tree:classify`**
+### `decision-tree:classify`
 
 ```NetLogo
 decision-tree:classify <classifier> <instance>
@@ -125,7 +125,7 @@ decision-tree:classify <classifier> <instance>
 
 Classify instances according to the learned tree.
 
-**`decision-tree:make-instance`**
+### `decision-tree:make-instance`
 
 ```NetLogo
 decision-tree:make-instance
@@ -133,7 +133,7 @@ decision-tree:make-instance
 
 Create an instance object.
 
-**`decision-tree:put-instance`**
+### `decision-tree:put-instance`
 
 ```NetLogo
 decision-tree:put-instance <instance> <key> <value>
